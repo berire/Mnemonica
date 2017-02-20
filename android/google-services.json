@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "802126989838",
+    "firebase_url": "https://mnemonic-25019.firebaseio.com",
+    "project_id": "mnemonic-25019",
+    "storage_bucket": "mnemonic-25019.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:802126989838:android:a29c971dfc44c526",
+        "android_client_info": {
+          "package_name": "com.mygdx.game"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "802126989838-e974v0a2gbvjsoe5lqf50322tk8ro5cv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCrpidmYaQO_54S04XO_MXMSc19q0zyFio"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
