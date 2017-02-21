@@ -11,7 +11,6 @@ buildscript {
         classpath 'com.google.gms:google-services:3.0.0'
     }
 }
-
 allprojects {
     apply plugin: "eclipse"
     apply plugin: "idea"
@@ -25,7 +24,6 @@ allprojects {
         ashleyVersion = '1.7.0'
         aiVersion = '1.8.0'
     }
-
     repositories {
         mavenLocal()
         mavenCentral()
@@ -33,11 +31,8 @@ allprojects {
         maven { url "https://oss.sonatype.org/content/repositories/releases/" }
     }
 }
-
 project(":desktop") {
     apply plugin: "java"
-
-
     dependencies {
         compile project(":core")
         compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
@@ -49,7 +44,6 @@ project(":desktop") {
         compile "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
     }
 }
-
 project(":android") {
     apply plugin: "android"
 
@@ -79,10 +73,9 @@ project(":android") {
         natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-x86"
         natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-x86_64"
         compile "com.badlogicgames.box2dlights:box2dlights:$box2DLightsVersion"
-        compile 'org.mongodb:mongo-java-driver:2.12.3'
+        compile "org.mongodb:mongo-java-driver:2.12.3"
     }
 }
-
 project(":ios") {
     apply plugin: "java"
     apply plugin: "robovm"
@@ -98,7 +91,6 @@ project(":ios") {
         compile "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-ios"
     }
 }
-
 project(":core") {
     apply plugin: "java"
 
@@ -112,7 +104,6 @@ project(":core") {
         compile "com.badlogicgames.box2dlights:box2dlights:$box2DLightsVersion"
     }
 }
-
 tasks.eclipse.doLast {
     delete ".project"
 }
