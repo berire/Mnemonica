@@ -39,6 +39,10 @@ public class User {
         friends=null;
         picture=null;
     }
+    public User(String name)
+    {
+        this.Name=name;
+    }
 
     public User(String name,String password,String mail,user_type type)
     {

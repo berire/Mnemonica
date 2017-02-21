@@ -16,29 +16,28 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.firebase.client.Firebase;
 import com.mongodb.DBCollection;
 import com.mygdx.game.Mnemonica;
 import com.mygdx.game.User;
 
 /**
- * Created by user on 4.2.2017.
+ * Created by user on 21.2.2017.
  */
-public class Register_screen extends ScreenAdapter{
+public class Login_screen extends ScreenAdapter {
 
     public Mnemonica game;
 
     public User newUser;
-    public String UserName=null;
+    public String UserName;
     public String UserMail;
     public String UserPassword;
 
-    public Stage reg_stage;
+    public Stage log_stage;
 
     private Skin skin;
     private TextureAtlas atlas;
 
-    private Group regGroup;
+    private Group logGroup;
     private BitmapFont main_font;
     private Sprite intro_bg,reg_bg;
 
@@ -46,15 +45,13 @@ public class Register_screen extends ScreenAdapter{
     private TextField f_name,f_mail,f_password;
 
     private TextField.TextFieldStyle styleT;
-    private Firebase mRef;
 
-    public Register_screen(final Mnemonica game) {
+    public Login_screen(final Mnemonica game) {
         this.game = game;
-        newUser=new User();
 
         DBCollection userTB = Mnemonica.MDb.getCollection("Users");
 
-        reg_stage = new Stage(Mnemonica.view, Mnemonica.batch);
+        log_stage = new Stage(Mnemonica.view, Mnemonica.batch);
         atlas = new TextureAtlas(Gdx.files.internal("smth.atlas"));
         skin = new Skin();
         skin.addRegions(atlas);
@@ -97,8 +94,7 @@ public class Register_screen extends ScreenAdapter{
 
                     @Override
                     public void input(String input) {
-                        UserName = input;
-                        newUser.setName(UserName);
+                        UserName = input.toUpperCase();
                         f_name.setText(UserName);
                         f_name.setSize((Mnemonica.WIDTH), f_name.getMinHeight());
                         f_name.setPosition((Mnemonica.WIDTH/100)*50,(Mnemonica.WIDTH/100)*55);
@@ -188,41 +184,29 @@ public class Register_screen extends ScreenAdapter{
                 if(register_btn.isPressed())
                 {
                     //SoundAssets.playSound(SoundAssets.clickSound);
-                   // newUser= new User(UserName,null,UserPassword,UserPassword,null);
-
-
-                    if(UserName!= null){
-                        System.out.println("SUCCESS");
-                        mRef= new Firebase("https://mnemonica-15b7e.firebaseio.com/");
-                        Firebase mRefChild = mRef.child("Name");
-                        mRefChild.setValue(newUser.getName());
-                    }
-
-
-
+                    // newUser= new User(UserName,null,UserPassword,UserPassword,null);
                 }
 
                 return false;
             }});
 
-        reg_stage.addActor(f_mail);
-        reg_stage.addActor(f_name);
-        reg_stage.addActor(f_password);
-        reg_stage.addActor(register_btn);
-
+        log_stage.addActor(register_btn);
+        log_stage.addActor(f_mail);
+        log_stage.addActor(f_name);
+        log_stage.addActor(f_password);
     }
     public void render ( float delta) {
         InputMultiplexer inputMultiplexer = new InputMultiplexer();
-        inputMultiplexer.addProcessor(reg_stage);
+        inputMultiplexer.addProcessor(log_stage);
         Gdx.input.setInputProcessor(inputMultiplexer);
 
-        reg_stage.act();
+        log_stage.act();
 
         Mnemonica.batch.begin();
 
         Mnemonica.batch.draw(reg_bg,0,0,Mnemonica.WIDTH,Mnemonica.HEIGHT);
         Mnemonica.batch.end();
 
-        reg_stage.draw();
+        log_stage.draw();
     }
 }

@@ -11,5 +11,6 @@ eclipse.project {
 }
 dependencies {
     compile 'org.mongodb:mongo-java-driver:2.12.3'
+    compile 'com.firebase:firebase-client-jvm:2.3.1'
 }
 
