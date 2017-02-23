@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -16,7 +17,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 import com.mongodb.DBCollection;
 import com.mygdx.game.Mnemonica;
 import com.mygdx.game.User;
@@ -46,7 +50,10 @@ public class Register_screen extends ScreenAdapter{
     private TextField f_name,f_mail,f_password;
 
     private TextField.TextFieldStyle styleT;
+    private Texture background;
+
     private Firebase mRef;
+    private Firebase mRef2;
 
     public Register_screen(final Mnemonica game) {
         this.game = game;
@@ -59,7 +66,8 @@ public class Register_screen extends ScreenAdapter{
         skin = new Skin();
         skin.addRegions(atlas);
 
-        reg_bg = new Sprite(atlas.createSprite("login"));
+        //reg_bg = new Sprite(atlas.createSprite("login"));
+        background=new Texture(Gdx.files.internal("register.jpg"));
 
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Cartoon.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
@@ -123,6 +131,7 @@ public class Register_screen extends ScreenAdapter{
                     @Override
                     public void input(String input) {
                         UserMail = input;
+                        newUser.setMail(UserMail);
                         f_mail.setText(UserMail);
                         f_mail.setSize((Mnemonica.WIDTH), f_mail.getMinHeight());
                         f_mail.setPosition((Mnemonica.WIDTH/100)*50,(Mnemonica.WIDTH/100)*40);
@@ -194,8 +203,10 @@ public class Register_screen extends ScreenAdapter{
                     if(UserName!= null){
                         System.out.println("SUCCESS");
                         mRef= new Firebase("https://mnemonica-15b7e.firebaseio.com/");
-                        Firebase mRefChild = mRef.child("Name");
-                        mRefChild.setValue(newUser.getName());
+                        Firebase mRefChild = mRef.push();
+                        mRefChild.child("Name").setValue(newUser.getName());
+                        mRefChild.child("Email").setValue(newUser.getE_mail());
+                        game.setScreen(new Login_screen(game));
                     }
 
 
@@ -204,6 +215,22 @@ public class Register_screen extends ScreenAdapter{
 
                 return false;
             }});
+
+        //databseden okumak icin
+        mRef2= new Firebase("https://mnemonica-15b7e.firebaseio.com/-KdcGkyJ97oDBEEoq1hE/Name");
+
+        mRef2.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String value = dataSnapshot.getValue(String.class);
+                System.out.print(value);
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
 
         reg_stage.addActor(f_mail);
         reg_stage.addActor(f_name);
@@ -220,7 +247,7 @@ public class Register_screen extends ScreenAdapter{
 
         Mnemonica.batch.begin();
 
-        Mnemonica.batch.draw(reg_bg,0,0,Mnemonica.WIDTH,Mnemonica.HEIGHT);
+        Mnemonica.batch.draw(background,0,0,Mnemonica.WIDTH,Mnemonica.HEIGHT);
         Mnemonica.batch.end();
 
         reg_stage.draw();

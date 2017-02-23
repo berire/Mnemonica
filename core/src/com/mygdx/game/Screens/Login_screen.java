@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -16,6 +17,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 import com.mongodb.DBCollection;
 import com.mygdx.game.Mnemonica;
 import com.mygdx.game.User;
@@ -40,9 +45,12 @@ public class Login_screen extends ScreenAdapter {
     private Group logGroup;
     private BitmapFont main_font;
     private Sprite intro_bg,reg_bg;
+    private Texture background;
 
     private ImageButton sound_btn,register_btn;
     private TextField f_name,f_mail,f_password;
+
+    private Firebase mRef2;
 
     private TextField.TextFieldStyle styleT;
 
@@ -56,7 +64,9 @@ public class Login_screen extends ScreenAdapter {
         skin = new Skin();
         skin.addRegions(atlas);
 
-        reg_bg = new Sprite(atlas.createSprite("login"));
+        //reg_bg = new Sprite(atlas.createSprite("login"));
+        background=new Texture(Gdx.files.internal("login.png"));
+
 
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Cartoon.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
@@ -185,6 +195,23 @@ public class Login_screen extends ScreenAdapter {
                 {
                     //SoundAssets.playSound(SoundAssets.clickSound);
                     // newUser= new User(UserName,null,UserPassword,UserPassword,null);
+
+                    //databseden okumak icin
+                    mRef2= new Firebase("https://mnemonica-15b7e.firebaseio.com/-KdcGkyJ97oDBEEoq1hE/Name");
+
+                    mRef2.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            String value = dataSnapshot.getValue(String.class);
+                            System.out.print(value);
+                        }
+
+                        @Override
+                        public void onCancelled(FirebaseError firebaseError) {
+
+                        }
+                    });
+
                 }
 
                 return false;
@@ -204,7 +231,7 @@ public class Login_screen extends ScreenAdapter {
 
         Mnemonica.batch.begin();
 
-        Mnemonica.batch.draw(reg_bg,0,0,Mnemonica.WIDTH,Mnemonica.HEIGHT);
+        Mnemonica.batch.draw(background,0,0,Mnemonica.WIDTH,Mnemonica.HEIGHT);
         Mnemonica.batch.end();
 
         log_stage.draw();

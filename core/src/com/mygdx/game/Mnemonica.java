@@ -18,8 +18,8 @@ import com.mygdx.game.Screens.Register_screen;
 import java.net.UnknownHostException;
 
 public class Mnemonica extends Game {
-	public static int WIDTH= 1080;
-	public static int HEIGHT= 1920;
+	public static int WIDTH= 800;
+	public static int HEIGHT= 800;
 	public static int ratio;
 
 	public final static String TITLE = "MNEMONICA";
